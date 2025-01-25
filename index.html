@@ -4,24 +4,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Presente para a Camille</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@400;700&family=Poppins:wght@400;700&family=Oswald:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <style>
-    body {
-      background-color: black;
+ body {
       margin: 0;
       display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+                  color:black;
+      background: linear-gradient(to right, blue, red);
+      background-size: 200% 200%;
+      animation: gradientAnimation 8s linear infinite;
+    }
+
+    /* Animação do gradiente */
+    @keyframes gradientAnimation {
+      0% {
+        background: linear-gradient(to right, blue, red);
+      }
+      25% {
+        background: linear-gradient(to right, red, yellow);
+      }
+      50% {
+        background: linear-gradient(to right, yellow, green);
+      }
+      75% {
+        background: linear-gradient(to right, green, orange);
+      }
+      100% {
+        background: linear-gradient(to right, orange, blue);
+      }
     }
 
     main {
-      flex: 1; /* Faz o conteúdo ocupar o espaço disponível */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      margin-top: 0px;
-    }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Garante o conteúdo alinhado no topo */
+  width: 100%; /* Garantir que ocupe a largura da tela */
+}
 
     .container {
       width: 450px;
@@ -51,9 +74,8 @@
     }
 
     #loading {
+      margin-top: -40px;
       text-align: center;
-      font-size: 18px;
-      color: #555;
     }
 
     img {
@@ -63,8 +85,8 @@
     }
 
     footer {
-  background-color: white;
-  color: black;
+  background: linear-gradient(to right, aquamarine,fuchsia );
+  color:white;
   text-align: center;
   font-size: 18px;
   padding: 10px 0;
@@ -89,7 +111,7 @@
         <input type="file" class="form-control mb-3" name="image" id="imageInput" accept="image/*" required />
         <button type="submit" class="btn btn-primary w-100">Enviar</button>
       </form>
-      <div id="loading" style="display: none;">Carregando...</div>
+      <div id="loading" style="display: none;"><img src="loader.png" class="img-fluid"></div>
       <div id="result"></div>
   
       <!-- Imagem no canto inferior direito -->
@@ -102,12 +124,12 @@
         height: auto;
       ">
     </div>
-  </main>
-  <br><br><br><br><br><br>  <br><br><br><br><br><br><br><br> 
 
+<div id="div1" style="visibility: hidden;"><h1>Parabéns explore os mistérios de Camille Secrets</h1><br></div>
 
+</main>
   <footer>
-    Ícaro Desenvolvedor Web
+    © 2025 Camille Secrets todos os direitos reservados
   </footer>
   <script>
     document.getElementById('imageForm').addEventListener('submit', async (event) => {
