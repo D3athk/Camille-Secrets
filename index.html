@@ -74,8 +74,9 @@
     }
 
     #loading {
-      margin-top: -40px;
+      margin-top: 20px;
       text-align: center;
+      font-size: 18px;
     }
 
     img {
@@ -111,7 +112,10 @@
         <input type="file" class="form-control mb-3" name="image" id="imageInput" accept="image/*" required />
         <button type="submit" class="btn btn-primary w-100">Enviar</button>
       </form>
-      <div id="loading" style="display: none;"><img src="loader.png" class="img-fluid"></div>
+      <div id="loading" style="display: none;">
+        <span id="loadingText">Carregando...</span>
+        <span id="countdown">30</span> segundos restantes
+      </div>
       <div id="result"></div>
   
       <!-- Imagem no canto inferior direito -->
@@ -133,42 +137,62 @@
   </footer>
   <script>
     document.getElementById('imageForm').addEventListener('submit', async (event) => {
-      event.preventDefault(); // Evita recarregar a página
-  
+      event.preventDefault();
+
       const formData = new FormData();
       const imageInput = document.getElementById('imageInput');
       const loadingDiv = document.getElementById('loading');
+      const loadingText = document.getElementById('loadingText');
+      const countdown = document.getElementById('countdown');
       const resultDiv = document.getElementById('result');
-  
+      const submitButton = event.target.querySelector('button');
+
       if (!imageInput.files[0]) {
         resultDiv.textContent = 'Por favor, selecione uma imagem.';
         return;
       }
-  
+
       formData.append('image', imageInput.files[0]);
-  
-      // Exibe o loading
+
+      // Exibe o loading e desabilita o botão
       loadingDiv.style.display = 'block';
+      submitButton.disabled = true;
       resultDiv.textContent = '';
-  
+
+      // Contagem regressiva de 60 segundos
+      let timeLeft = 30;
+      countdown.textContent = timeLeft;
+
+      const interval = setInterval(() => {
+        timeLeft -= 1;
+        countdown.textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          loadingText.textContent = 'Tempo esgotado!';
+        }
+      }, 1000);
+
       try {
-        // Use o proxy do Heroku (AnyCORS) para redirecionar a requisição
         const response = await fetch('https://camilla-screts-4-0.onrender.com/process', {
           method: 'POST',
           body: formData,
         });
-  
+
         if (!response.ok) {
           throw new Error(`Erro: ${response.statusText}`);
         }
-  
-        const data = await response.json(); // Espera um JSON do backend
-        resultDiv.textContent = data.result; // Exibe o resultado no frontend
+
+        const data = await response.json();
+
+        // Exibe a resposta do servidor
+        resultDiv.textContent = data.result;
       } catch (error) {
         resultDiv.textContent = `Erro: ${error.message}`;
       } finally {
-        // Esconde o loading
+        // Esconde o loading e reativa o botão
+        clearInterval(interval);
         loadingDiv.style.display = 'none';
+        submitButton.disabled = false;
       }
     });
   </script>
